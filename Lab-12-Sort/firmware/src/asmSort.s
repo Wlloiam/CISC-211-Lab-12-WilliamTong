@@ -66,8 +66,150 @@ NOTE: definitions: "greater than" means most positive number
 asmSwap:
 
     /* YOUR asmSwap CODE BELOW THIS LINE! VVVVVVVVVVVVVVVVVVVVV  */
-
-
+    push {r4-r11,LR}
+    mov r4,r0
+    mov r5,r1
+    mov r6,r2
+    
+    cmp r6,1
+    beq element_size_1
+    cmp r6,2
+    beq element_size_2
+    b	element_size_4
+    
+    element_size_1:
+    ldrb r7,[r4]
+    ldrb r8,[r4,4]
+    cmp r7,0
+    beq zero_element_size_1
+    cmp r8,0
+    beq zero_element_size_1
+    cmp r5,0
+    beq unsigned_case1
+    b   sigened_case1
+    unsigned_case1:
+    cmp r7,r8
+    beq equal_size1
+    bhi greater_size1
+    bls lower_size1
+    
+    sigened_case1:
+    cmp r7,r8
+    beq equal_size1
+    bge greater_size1
+    blt lower_size1
+    
+    zero_element_size_1:
+    mov r0,-1
+    b done
+    
+    equal_size1:
+    mov r0,0
+    b done
+    
+    greater_size1:
+    strb r8,[r4]
+    strb r7,[r4,4]
+    mov r0,1
+    b done
+    mov r0,0
+    b done
+    
+    lower_size1:
+    mov r0,0
+    b done
+    
+    element_size_2:
+    ldrh r7,[r4]
+    ldrh r8,[r4,4]
+    cmp r7,0
+    beq zero_element_size_2
+    cmp r8,0
+    beq zero_element_size_2
+    
+    cmp r5,0
+    beq unsigned_case2
+    b   sigened_case2
+    
+    unsigned_case2:
+    cmp r7,r8
+    beq equal_size2
+    bhi greater_size2
+    bls lower_size2
+    
+    sigened_case2:
+    cmp r7,r8
+    beq equal_size2
+    bge greater_size2
+    blt lower_size2
+    
+    zero_element_size_2:
+    mov r0,-1
+    b done
+    
+    equal_size2:
+    mov r0,0
+    b done
+    
+    greater_size2:
+    strh r8,[r4]
+    strh r7,[r4,4]
+    mov r0,1
+    b done
+    mov r0,0
+    b done
+    
+    lower_size2:
+    mov r0,0
+    b done
+    
+    element_size_4:
+    ldr r7,[r4]
+    ldr r8,[r4,4]
+    
+    cmp r7,0
+    beq zero_element_size_4
+    cmp r8,0
+    beq zero_element_size_4
+    
+    cmp r5,0
+    beq unsigned_case4
+    b   sigened_case4
+    
+    unsigned_case4:
+    cmp r7,r8
+    beq equal_size4
+    bhi greater_size4
+    bls lower_size4
+    
+    sigened_case4:
+    cmp r7,r8
+    beq equal_size4
+    bge greater_size4
+    blt lower_size4
+    
+    zero_element_size_4:
+    mov r0,-1
+    b done
+    
+    equal_size4:
+    mov r0,0
+    b done
+    
+    greater_size4:
+    str r8,[r4]
+    str r7,[r4,4]
+    mov r0,1
+    b done
+    
+    lower_size4:
+    mov r0,0
+    b done
+    
+    done:
+    
+    pop {r4-r11,LR}
+    bx LR
 
     /* YOUR asmSwap CODE ABOVE THIS LINE! ^^^^^^^^^^^^^^^^^^^^^  */
     
