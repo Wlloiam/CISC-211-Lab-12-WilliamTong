@@ -94,7 +94,16 @@ asmSwap:
     bls lower_size1
     
     sigened_case1:
-    cmp r7,r8
+    ldr r11,=0xFFFFFF00
+    mov r9,r7
+    mov r10,r8
+    lsls r9,r9,24
+    lsr r9,r9,24
+    orrmi r9,r9,r11
+    lsls r10,r10,24
+    lsr r10,r10,24
+    orrmi r10,r10,r11
+    cmp r9,r10
     beq equal_size1
     bge greater_size1
     blt lower_size1
@@ -138,7 +147,16 @@ asmSwap:
     bls lower_size2
     
     sigened_case2:
-    cmp r7,r8
+    ldr r11,=0xFFFF0000
+    mov r9,r7
+    mov r10,r8
+    lsls r9,r9,16
+    lsr r9,r9,16
+    orrmi r9,r9,r11
+    lsls r10,r10,16
+    lsr r10,r10,16
+    orrmi r10,r10,r11
+    cmp r9,r10
     beq equal_size2
     bge greater_size2
     blt lower_size2
@@ -248,9 +266,35 @@ asmSort:
      */
 
     /* YOUR asmSort CODE BELOW THIS LINE! VVVVVVVVVVVVVVVVVVVVV  */
-
-
-
+    push {r4-r11,LR}
+    
+    mov r4,r0	/*for manipulation*/
+    mov r9,r0	/**for repeat*/
+    mov r10,0
+    mov r11,0
+    
+    sorting:
+    mov r0,r4
+    BL asmSwap
+    cmp r0,-1
+    beq check_repeat_or_not
+    add r10,r10,r0
+    add r11,r11,r0
+    add r4,r4,4
+    b	sorting
+    
+    check_repeat_or_not:
+    cmp r11,0
+    beq done_for_asmSort
+    mov r4,r9
+    mov  r11,0
+    b	sorting
+    
+    done_for_asmSort:
+    mov r0,r10
+    
+    pop {r4-r11,LR}
+    bx LR
     /* YOUR asmSort CODE ABOVE THIS LINE! ^^^^^^^^^^^^^^^^^^^^^  */
 
    
