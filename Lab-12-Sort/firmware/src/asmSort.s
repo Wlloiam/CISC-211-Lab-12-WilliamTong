@@ -94,15 +94,19 @@ asmSwap:
     bls lower_size1
     
     sigened_case1:
+    
     ldr r11,=0xFFFFFF00
     mov r9,r7
     mov r10,r8
+    
     lsls r9,r9,24
     lsr r9,r9,24
     orrmi r9,r9,r11
+    
     lsls r10,r10,24
     lsr r10,r10,24
     orrmi r10,r10,r11
+    
     cmp r9,r10
     beq equal_size1
     bge greater_size1
@@ -150,12 +154,15 @@ asmSwap:
     ldr r11,=0xFFFF0000
     mov r9,r7
     mov r10,r8
+    
     lsls r9,r9,16
     lsr r9,r9,16
     orrmi r9,r9,r11
+    
     lsls r10,r10,16
     lsr r10,r10,16
     orrmi r10,r10,r11
+    
     cmp r9,r10
     beq equal_size2
     bge greater_size2
@@ -270,8 +277,8 @@ asmSort:
     
     mov r4,r0	/*for manipulation*/
     mov r9,r0	/**for repeat*/
-    mov r10,0
-    mov r11,0
+    mov r10,0	/**numbers of swap**/
+    mov r11,0	/**to check whether repeat or not**/
     
     sorting:
     mov r0,r4
